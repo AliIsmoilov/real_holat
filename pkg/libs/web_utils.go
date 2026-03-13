@@ -103,6 +103,20 @@ func HandleInternalServerError(w http.ResponseWriter, err error) error {
 	return err
 }
 
+func HandleNotFoundErr(w http.ResponseWriter, err error) error {
+	if err == nil {
+		return nil
+	}
+
+	w.WriteHeader(http.StatusNotFound)
+	writeJSON(w, response{Error: true,
+		Data: errorInfo{
+			Status:  http.StatusNotFound,
+			Message: "not found: " + err.Error(),
+		}})
+	return err
+}
+
 func WriteJSONWithSuccess(w http.ResponseWriter, data interface{}) {
 	data = response{
 		Error: false,

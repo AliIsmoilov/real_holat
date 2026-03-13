@@ -83,3 +83,31 @@ type LoginWithTgOtpTelegramInfo struct {
 	TgFirstName    string `json:"tg_first_name"`
 	TgLanguageCode string `json:"tg_language_code"`
 }
+
+type UserCreateRequest struct {
+	FullName    string `json:"full_name" binding:"required"`
+	PhoneNumber string `json:"phone_number" binding:"required"`
+	Role        string `json:"role"`
+}
+
+type UserUpdateRequest struct {
+	FullName    string `json:"full_name"`
+	PhoneNumber string `json:"phone_number"`
+	Role        string `json:"role"`
+}
+
+type UserResponse struct {
+	Id          uuid.UUID `json:"id"`
+	FullName    string    `json:"full_name"`
+	PhoneNumber string    `json:"phone_number"`
+	Role        string    `json:"role"`
+	TgID        *int64    `json:"tg_id,omitempty"`
+	TgUserName  string    `json:"tg_user_name"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
+}
+
+type UserListResponse struct {
+	Users []*UserResponse `json:"users"`
+	Count int64           `json:"count"`
+}

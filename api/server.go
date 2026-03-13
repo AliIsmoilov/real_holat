@@ -56,5 +56,12 @@ func New(h *Handler) *gin.Engine {
 	apiV1.POST("/users/login", handlerV1.Login)
 	apiV1.POST("/users/login-with-tg-otp", handlerV1.LoginWithTgOtp)
 
+	// user routes
+	apiV1.POST("/users", handlerV1.CreateUser)
+	apiV1.GET("/users/:id", handlerV1.GetUserByID)
+	apiV1.GET("/users", handlerV1.GetUsers)
+	apiV1.PUT("/users/:id", handlerV1.UpdateUser)
+	apiV1.DELETE("/users/:id", handlerV1.DeleteUser)
+
 	return engine
 }
