@@ -80,6 +80,21 @@ func main() {
 		log.Fatal("failed to init casbin:", err)
 	}
 
+	// Create verification service and start Telegram bot (if token provided)
+	verifSvc := service.NewVerificationService(strg)
+	botToken := os.Getenv("TELEGRAM_BOT_TOKEN")
+	if botToken != "" {
+		bot, err := service.NewTelegramBot(botToken, verifSvc)
+		if err != nil {
+			log.Printf("failed to start telegram bot: %v", err)
+		} else {
+			// run bot in background
+			go bot.Start()
+		}
+	} else {
+		log.Println("TELEGRAM_BOT_TOKEN not set, telegram bot disabled")
+	}
+
 	// Start HTTP server
 	engine := api.New(&api.Handler{
 		Service: svc,

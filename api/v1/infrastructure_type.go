@@ -25,7 +25,7 @@ func (h *handlerV1) CreateInfrastructureType(ctx *gin.Context) {
 		return
 	}
 
-	libs.RespondSuccess(ctx, http.StatusCreated, m.ParseInfrastructureTypeRepoToApi(data))
+	libs.WriteJSONWithSuccess(ctx.Writer, m.ParseInfrastructureTypeRepoToApi(data))
 }
 
 func (h *handlerV1) UpdateInfrastructureType(ctx *gin.Context) {
@@ -67,7 +67,7 @@ func (h *handlerV1) GetInfrastructureTypeById(ctx *gin.Context) {
 		return
 	}
 
-	libs.RespondSuccess(ctx, http.StatusOK, m.ParseInfrastructureTypeRepoToApi(data))
+	libs.WriteJSONWithSuccess(ctx.Writer, m.ParseInfrastructureTypeRepoToApi(data))
 }
 
 func (h *handlerV1) GetListInfrastructureTypes(ctx *gin.Context) {
@@ -94,7 +94,7 @@ func (h *handlerV1) GetListInfrastructureTypes(ctx *gin.Context) {
 		return
 	}
 
-	libs.RespondSuccess(ctx, http.StatusOK, m.ToInfrastructureTypeListRepoToApi(data))
+	libs.WriteJSONWithSuccess(ctx.Writer, m.ToInfrastructureTypeListRepoToApi(data))
 }
 
 func (h *handlerV1) DeleteInfrastructureType(ctx *gin.Context) {
@@ -106,6 +106,5 @@ func (h *handlerV1) DeleteInfrastructureType(ctx *gin.Context) {
 		return
 	}
 
-	libs.RespondSuccess(ctx, http.StatusOK,
-		"infrastructure type deleted successfully")
+	libs.WriteJSONWithSuccess(ctx.Writer, gin.H{"message": "infrastructure type deleted successfully"})
 }

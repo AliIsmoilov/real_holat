@@ -1,9 +1,13 @@
 package v1
 
 import (
+	"context"
+	"fmt"
 	"net/http"
 	"real-holat/api/models"
 	"real-holat/pkg/jwt"
+	"real-holat/pkg/libs"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,7 +19,7 @@ func (h *handlerV1) Login(ctx *gin.Context) {
 		return
 	}
 
-	user, err := h.service.User().GetByEmail(ctx.Request.Context(), req.Email)
+	user, err := h.service.User().GetByPhone(ctx.Request.Context(), req.Phone)
 	if err != nil {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "invalid credentials"})
 		return
@@ -28,7 +32,7 @@ func (h *handlerV1) Login(ctx *gin.Context) {
 	// 	ctx.JSON(http.StatusUnauthorized, gin.H{"message": "invalid credentials"})
 	// 	return
 	// }
-	if user.Password != req.Password {
+	if user.FullName != req.Password { // Temporary: using full_name as password for testing
 		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "password does not match"})
 		return
 	}
@@ -40,4 +44,66 @@ func (h *handlerV1) Login(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"access_token": token})
+}
+
+func (h *handlerV1) LoginWithTgOtp(c *gin.Context) {
+	var req models.VerifyOTPRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		libs.HandleBadRequestErr(c.Writer, err)
+		return
+	}
+
+	verification, err := h.service.Verification().GetByCode(context.Background(), req.Code, time.Now())
+	if err != nil {
+		libs.HandleInternalServerError(c.Writer, err)
+		return
+	}
+	if verification == nil {
+		libs.HandleBadRequestErr(c.Writer, fmt.Errorf("invalid or expired code"))
+		return
+	}
+
+	ok, err := h.service.Verification().VerifyByCode(context.Background(), req.Code)
+	if err != nil {
+		libs.HandleInternalServerError(c.Writer, err)
+		return
+	}
+	if !ok {
+		libs.HandleBadRequestErr(c.Writer, fmt.Errorf("invalid or expired code"))
+		return
+	}
+
+	// Create or update user from verification data
+	user, err := h.service.User().CreateOrUpdateFromVerification(context.Background(), verification)
+	if err != nil {
+		libs.HandleInternalServerError(c.Writer, err)
+		return
+	}
+
+	// Generate JWT token
+	token, err := jwt.GenerateJWT(user)
+	if err != nil {
+		libs.HandleInternalServerError(c.Writer, err)
+		return
+	}
+
+	// Return login information
+	response := gin.H{
+		"access_token": token,
+		"user": gin.H{
+			"id":           user.Id,
+			"full_name":    user.FullName,
+			"phone_number": user.PhoneNumber,
+			"role":         user.Role,
+			"tg_id":        user.TgID,
+			"tg_user_name": user.TgUserName,
+		},
+		"telegram_info": gin.H{
+			"tg_user_name":     verification.TgUserName,
+			"tg_first_name":    verification.TgFirstName,
+			"tg_language_code": verification.TgLanguageCode,
+		},
+	}
+
+	libs.WriteJSONWithSuccess(c.Writer, response)
 }

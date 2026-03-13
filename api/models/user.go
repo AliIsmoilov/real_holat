@@ -1,6 +1,10 @@
 package models
 
-import "github.com/google/uuid"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type InfrastructureTypeModelResp struct {
 	Id      uuid.UUID `json:"id"`
@@ -39,6 +43,22 @@ type InfrastructureTypeUpdateReq struct {
 }
 
 type LoginRequest struct {
-	Email    string `json:"email" binding:"required,email"`
+	Phone    string `json:"phone" binding:"required"`
 	Password string `json:"password" binding:"required"`
+}
+
+type VerificationCode struct {
+	ID             uint      `gorm:"primaryKey"`
+	TelegramID     int64     `gorm:"index"`
+	Phone          string
+	Code           string    `gorm:"size:6"`
+	ExpiresAt      time.Time
+	CreatedAt      time.Time
+	TgUserName     string    `gorm:"column:tg_user_name"`
+	TgFirstName    string    `gorm:"column:tg_first_name"`
+	TgLanguageCode string    `gorm:"column:tg_language_code"`
+}
+
+type VerifyOTPRequest struct {
+	Code string `json:"code" binding:"required,len=6"`
 }

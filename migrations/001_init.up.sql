@@ -28,6 +28,8 @@ CREATE TABLE users (
     full_name VARCHAR(255) NOT NULL,
     phone_number VARCHAR(20) UNIQUE NOT NULL,
     role user_role DEFAULT 'citizen',
+    tg_id BIGINT,
+    tg_user_name VARCHAR(255),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP WITH TIME ZONE

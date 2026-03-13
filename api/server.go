@@ -45,14 +45,16 @@ func New(h *Handler) *gin.Engine {
 	// middleware.CasbinMiddleware(h.Enf),
 	)
 
-	// Infrastructure Type routes
+	// infrastructure-types routes
 	apiV1.POST("/infrastructure-types", handlerV1.CreateInfrastructureType)
 	apiV1.PUT("/infrastructure-types/:id", handlerV1.UpdateInfrastructureType)
 	apiV1.GET("/infrastructure-types/:id", handlerV1.GetInfrastructureTypeById)
 	apiV1.GET("/infrastructure-types", handlerV1.GetListInfrastructureTypes)
 	apiV1.DELETE("/infrastructure-types/:id", handlerV1.DeleteInfrastructureType)
 
+	// auth routes
 	apiV1.POST("/users/login", handlerV1.Login)
+	apiV1.POST("/users/login-with-tg-otp", handlerV1.LoginWithTgOtp)
 
 	return engine
 }
