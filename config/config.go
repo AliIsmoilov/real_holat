@@ -2,6 +2,7 @@ package config
 
 import (
 	"log"
+	"os"
 	"path/filepath"
 	"sync"
 
@@ -30,7 +31,12 @@ type CloudflareR2 struct {
 
 func initConfig(path string) error {
 	envPath := filepath.Join(path, ".env")
-	if err := godotenv.Load(envPath); err != nil {
+	// Load a .env file if it exists. If it doesn't, rely on environment variables.
+	if _, err := os.Stat(envPath); err == nil {
+		if err := godotenv.Load(envPath); err != nil {
+			return err
+		}
+	} else if !os.IsNotExist(err) {
 		return err
 	}
 
