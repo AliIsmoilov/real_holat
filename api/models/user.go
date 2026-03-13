@@ -48,17 +48,38 @@ type LoginRequest struct {
 }
 
 type VerificationCode struct {
-	ID             uint      `gorm:"primaryKey"`
-	TelegramID     int64     `gorm:"index"`
+	ID             uint  `gorm:"primaryKey"`
+	TelegramID     int64 `gorm:"index"`
 	Phone          string
-	Code           string    `gorm:"size:6"`
+	Code           string `gorm:"size:6"`
 	ExpiresAt      time.Time
 	CreatedAt      time.Time
-	TgUserName     string    `gorm:"column:tg_user_name"`
-	TgFirstName    string    `gorm:"column:tg_first_name"`
-	TgLanguageCode string    `gorm:"column:tg_language_code"`
+	TgUserName     string `gorm:"column:tg_user_name"`
+	TgFirstName    string `gorm:"column:tg_first_name"`
+	TgLanguageCode string `gorm:"column:tg_language_code"`
 }
 
 type VerifyOTPRequest struct {
 	Code string `json:"code" binding:"required,len=6"`
+}
+
+type LoginWithTgOtpResponse struct {
+	AccessToken  string                     `json:"access_token"`
+	User         LoginWithTgOtpUserResp     `json:"user"`
+	TelegramInfo LoginWithTgOtpTelegramInfo `json:"telegram_info"`
+}
+
+type LoginWithTgOtpUserResp struct {
+	Id          uuid.UUID `json:"id"`
+	FullName    string    `json:"full_name"`
+	PhoneNumber string    `json:"phone_number"`
+	Role        string    `json:"role"`
+	TgID        *int64    `json:"tg_id,omitempty"`
+	TgUserName  string    `json:"tg_user_name"`
+}
+
+type LoginWithTgOtpTelegramInfo struct {
+	TgUserName     string `json:"tg_user_name"`
+	TgFirstName    string `json:"tg_first_name"`
+	TgLanguageCode string `json:"tg_language_code"`
 }

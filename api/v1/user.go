@@ -7,6 +7,7 @@ import (
 	"real-holat/api/models"
 	"real-holat/pkg/jwt"
 	"real-holat/pkg/libs"
+	"real-holat/pkg/mapper/api"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -86,24 +87,7 @@ func (h *handlerV1) LoginWithTgOtp(c *gin.Context) {
 		libs.HandleInternalServerError(c.Writer, err)
 		return
 	}
-
-	// Return login information
-	response := gin.H{
-		"access_token": token,
-		"user": gin.H{
-			"id":           user.Id,
-			"full_name":    user.FullName,
-			"phone_number": user.PhoneNumber,
-			"role":         user.Role,
-			"tg_id":        user.TgID,
-			"tg_user_name": user.TgUserName,
-		},
-		"telegram_info": gin.H{
-			"tg_user_name":     verification.TgUserName,
-			"tg_first_name":    verification.TgFirstName,
-			"tg_language_code": verification.TgLanguageCode,
-		},
-	}
+	response := api.ParseLoginWithTgOtpToResponse(token, user, verification)
 
 	libs.WriteJSONWithSuccess(c.Writer, response)
 }
