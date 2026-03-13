@@ -12,6 +12,7 @@ type StorageI interface {
 	Infrastructure() repo.InfrastructureI
 	User() repo.UserI
 	Verification() repo.VerificationStorageI
+	Report() repo.ReportI
 }
 
 type storage struct {
@@ -19,6 +20,7 @@ type storage struct {
 	infrastructureRepo     repo.InfrastructureI
 	userRepo               repo.UserI
 	verificationRepo       repo.VerificationStorageI
+	reportRepo             repo.ReportI
 }
 
 func New(db *gorm.DB) StorageI {
@@ -27,6 +29,7 @@ func New(db *gorm.DB) StorageI {
 		infrastructureRepo:     postgres.NewInfrastructure(db),
 		userRepo:               postgres.NewUser(db),
 		verificationRepo:       postgres.NewVerification(db),
+		reportRepo:             postgres.NewReport(db),
 	}
 }
 
@@ -44,4 +47,8 @@ func (s *storage) User() repo.UserI {
 
 func (s *storage) Verification() repo.VerificationStorageI {
 	return s.verificationRepo
+}
+
+func (s *storage) Report() repo.ReportI {
+	return s.reportRepo
 }

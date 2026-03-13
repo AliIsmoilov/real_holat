@@ -73,5 +73,12 @@ func New(h *Handler) *gin.Engine {
 	apiV1.GET("/infrastructures", handlerV1.GetListInfrastructures)
 	apiV1.DELETE("/infrastructures/:id", handlerV1.DeleteInfrastructure)
 
+	// report routes
+	apiV1.POST("/reports", handlerV1.CreateReport)
+	apiV1.PUT("/reports/:id", handlerV1.UpdateReport)
+	apiV1.GET("/reports/:id", handlerV1.GetReportById)
+	apiV1.GET("/infrastructures/:id/reports", handlerV1.GetReportsByInfrastructureId)
+	apiV1.DELETE("/reports/:id", handlerV1.DeleteReport)
+
 	return engine
 }

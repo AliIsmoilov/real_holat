@@ -11,6 +11,7 @@ type ServiceI interface {
 	InfrastructureType() InfrastructureTypeServiceI
 	Infrastructure() InfrastructureServiceI
 	Verification() VerificationServiceI
+	Report() ReportServiceI
 	R2() R2ServiceI
 }
 
@@ -19,6 +20,7 @@ type service struct {
 	infrastructureTypeSvc InfrastructureTypeServiceI
 	infrastructureSvc     InfrastructureServiceI
 	verificationSvc       VerificationServiceI
+	reportSvc             ReportServiceI
 	r2                    R2ServiceI
 }
 
@@ -35,6 +37,7 @@ func New(strg storage.StorageI, r2client *s3.Client) ServiceI {
 		infrastructureTypeSvc: NewInfrastructureTypeService(strg),
 		infrastructureSvc:     NewInfrastructureService(strg),
 		verificationSvc:       NewVerificationService(strg),
+		reportSvc:             NewReportService(strg),
 		r2:                    r2svc,
 	}
 }
@@ -53,6 +56,10 @@ func (s *service) Infrastructure() InfrastructureServiceI {
 
 func (s *service) Verification() VerificationServiceI {
 	return s.verificationSvc
+}
+
+func (s *service) Report() ReportServiceI {
+	return s.reportSvc
 }
 
 func (s *service) R2() R2ServiceI {
