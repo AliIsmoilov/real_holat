@@ -1,0 +1,17 @@
+
+
+# public access
+p, any, /v1/users/login, POST
+
+p, any, /v1/stadiums, POST
+p, any, /v1/stadiums, GET
+p, any, /v1/stadiums/:id, GET
+p, any, /v1/stadiums/:id, PUT
+p, any, /v1/stadiums/:id, DELETE
+
+p, any, /v1/regions, GET
+p, any, /v1/districts/:region, GET
+
+# admin access
+p, admin, /v1/categories, POST
+p, admin, /v1/categories, GET
