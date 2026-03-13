@@ -9,6 +9,7 @@ import (
 type ServiceI interface {
 	User() UserServiceI
 	InfrastructureType() InfrastructureTypeServiceI
+	Infrastructure() InfrastructureServiceI
 	Verification() VerificationServiceI
 	R2() R2ServiceI
 }
@@ -16,6 +17,7 @@ type ServiceI interface {
 type service struct {
 	userSvc               UserServiceI
 	infrastructureTypeSvc InfrastructureTypeServiceI
+	infrastructureSvc     InfrastructureServiceI
 	verificationSvc       VerificationServiceI
 	r2                    R2ServiceI
 }
@@ -31,6 +33,7 @@ func New(strg storage.StorageI, r2client *s3.Client) ServiceI {
 	return &service{
 		userSvc:               NewUserService(strg),
 		infrastructureTypeSvc: NewInfrastructureTypeService(strg),
+		infrastructureSvc:     NewInfrastructureService(strg),
 		verificationSvc:       NewVerificationService(strg),
 		r2:                    r2svc,
 	}
@@ -42,6 +45,10 @@ func (s *service) User() UserServiceI {
 
 func (s *service) InfrastructureType() InfrastructureTypeServiceI {
 	return s.infrastructureTypeSvc
+}
+
+func (s *service) Infrastructure() InfrastructureServiceI {
+	return s.infrastructureSvc
 }
 
 func (s *service) Verification() VerificationServiceI {

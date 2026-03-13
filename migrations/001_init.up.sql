@@ -1,6 +1,6 @@
 -- 1. ENUMS
 CREATE TYPE user_role AS ENUM ('citizen', 'moderator', 'admin');
-CREATE TYPE infra_status AS ENUM ('green', 'yellow', 'red');
+CREATE TYPE infra_status AS ENUM ('in-process', 'active', 'inactive');
 
 -- 2. AUTOMATIC UPDATED_AT FUNCTION
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -45,8 +45,8 @@ CREATE TABLE infrastructures (
     address TEXT NOT NULL,
     latitude DECIMAL(9,6) NOT NULL,
     longitude DECIMAL(9,6) NOT NULL,
-    current_status infra_status DEFAULT 'green',
-    overall_rating INTEGER DEFAULT 100,
+    status infra_status DEFAULT 'in-process',
+    overall_rating INTEGER DEFAULT 5,
     contractor_name VARCHAR(255),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,

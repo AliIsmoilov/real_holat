@@ -66,5 +66,12 @@ func New(h *Handler) *gin.Engine {
 	// image route
 	apiV1.POST("/image/upload", handlerV1.UploadImage)
 
+	// infrastructure routes
+	apiV1.POST("/infrastructures", handlerV1.CreateInfrastructure)
+	apiV1.PUT("/infrastructures/:id", handlerV1.UpdateInfrastructure)
+	apiV1.GET("/infrastructures/:id", handlerV1.GetInfrastructureById)
+	apiV1.GET("/infrastructures", handlerV1.GetListInfrastructures)
+	apiV1.DELETE("/infrastructures/:id", handlerV1.DeleteInfrastructure)
+
 	return engine
 }
