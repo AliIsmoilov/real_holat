@@ -63,5 +63,8 @@ func New(h *Handler) *gin.Engine {
 	apiV1.PUT("/users/:id", handlerV1.UpdateUser)
 	apiV1.DELETE("/users/:id", handlerV1.DeleteUser)
 
+	// image route
+	apiV1.POST("/image/upload", handlerV1.UploadImage)
+
 	return engine
 }

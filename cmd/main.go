@@ -28,7 +28,7 @@ func main() {
 	// ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	// defer cancel()
 
-	cfg := config.NewConfig(".")
+	cfg := config.LoadConfig(".")
 	databaseUrl := buildDatabaseURL(&cfg)
 
 	// m, err := migrate.New("file://migrations", databaseUrl)
@@ -70,7 +70,8 @@ func main() {
 
 	strg := storage.New(db)
 
-	svc := service.New(strg)
+	r2 := config.CreateR2Client(cfg)
+	svc := service.New(strg, r2)
 
 	enforcer, err := casbin.NewEnforcer(
 		"config/model.conf",
