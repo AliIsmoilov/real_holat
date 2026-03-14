@@ -26,18 +26,18 @@ func GetUserIDFromToken(accessToken string) (uuid.UUID, error) {
 		}
 	}
 
-	if _, ok := claims["id"]; !ok {
-		return uuid.Nil, fmt.Errorf("id is not set: %w", "invalid token")
+	if _, ok := claims["user_id"]; !ok {
+		return uuid.Nil, fmt.Errorf("user_id is not set: %w", "invalid token")
 	}
 
-	id, ok := claims["id"].(string)
+	id, ok := claims["user_id"].(string)
 	if !ok {
 		return uuid.Nil, fmt.Errorf("could not extract claims: %w", "invalid token")
 	}
 
 	userID, err := uuid.Parse(id)
 	if err != nil {
-		return uuid.Nil, fmt.Errorf("'id' could not be parsed as uuid: %w", "invalid token")
+		return uuid.Nil, fmt.Errorf("'user_id' could not be parsed as uuid: %w", "invalid token")
 	}
 	return userID, nil
 }
