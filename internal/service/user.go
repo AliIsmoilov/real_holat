@@ -17,6 +17,7 @@ type UserServiceI interface {
 	Update(ctx context.Context, req *repo.User) (*repo.User, error)
 	Delete(ctx context.Context, id uuid.UUID) error
 	CreateOrUpdateFromVerification(ctx context.Context, verification *repo.VerificationModel) (*repo.User, error)
+	AddCoins(ctx context.Context, userID uuid.UUID, coins int) error
 }
 
 type userService struct {
@@ -88,4 +89,8 @@ func (u *userService) CreateOrUpdateFromVerification(ctx context.Context, verifi
 	}
 
 	return u.strg.User().Create(ctx, newUser)
+}
+
+func (u *userService) AddCoins(ctx context.Context, userID uuid.UUID, coins int) error {
+	return u.strg.User().AddCoins(ctx, userID, coins)
 }

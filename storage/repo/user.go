@@ -15,6 +15,7 @@ type UserI interface {
 	GetAll(ctx context.Context, req GetAllUsersReq) (*GetAllUsersResp, error)
 	Update(ctx context.Context, req User) (*User, error)
 	Delete(ctx context.Context, id uuid.UUID) error
+	AddCoins(ctx context.Context, userID uuid.UUID, coins int) error
 }
 
 type User struct {
@@ -25,6 +26,7 @@ type User struct {
 	TgID         int64      `gorm:"column:tg_id"`
 	TgUserName   string     `gorm:"column:tg_user_name"`
 	PasswordHash string     `gorm:"column:password_hash"`
+	Coins        int        `gorm:"column:coins;default:0"`
 	CreatedAt    time.Time  `gorm:"column:created_at"`
 	UpdatedAt    time.Time  `gorm:"column:updated_at"`
 	DeletedAt    *time.Time `gorm:"column:deleted_at"`

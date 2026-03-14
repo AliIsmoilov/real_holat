@@ -36,3 +36,9 @@ p, admin, /api/v1/reports/:id, PUT
 p, admin, /api/v1/reports/:id, GET
 p, admin, /api/v1/infrastructures/:id/reports, GET
 p, admin, /api/v1/reports/:id, DELETE
+
+p, citizen, /api/v1/reports, POST
+p, citizen, /api/v1/reports/:id, PUT
+p, citizen, /api/v1/reports/:id, GET
+p, citizen, /api/v1/infrastructures/:id/reports, GET
+p, citizen, /api/v1/reports/:id, DELETE

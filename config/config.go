@@ -13,6 +13,7 @@ import (
 type Config struct {
 	Postgres     PostgresData
 	CloudflareR2 CloudflareR2 // used for image
+	JwtSecretKey string
 }
 
 type PostgresData struct {
@@ -56,7 +57,7 @@ func initConfig(path string) error {
 			R2_SECRET_ACCESS_KEY: v.GetString("R2_SECRET_ACCESS_KEY"),
 			R2_ACCOUNT_ID:        v.GetString("R2_ACCOUNT_ID"),
 		},
-		// JWTSecretKey: v.GetString("JWT_SECRET_KEY"),
+		JwtSecretKey: v.GetString("JWT_SECRET"),
 	}
 
 	return nil

@@ -51,3 +51,9 @@ type ReportListResponse struct {
 	Reports []*Report `json:"reports"`
 	Count   int64     `json:"count"`
 }
+
+type CreateReportResponse struct {
+	Report     *ReportResponse `json:"report"`
+	GivenCoins int             `json:"given_coins"`
+	TotalCoins int             `json:"total_coins"`
+}

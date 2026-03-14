@@ -1,9 +1,11 @@
 package v1
 
 import (
+	"fmt"
 	"strconv"
 
 	"real-holat/api/models"
+	"real-holat/pkg/constants"
 	"real-holat/pkg/libs"
 	m "real-holat/pkg/mapper/api"
 	"real-holat/storage/repo"
@@ -18,13 +20,44 @@ func (h *handlerV1) CreateReport(ctx *gin.Context) {
 		return
 	}
 
+	userID, err := libs.GetUserIDFromToken(ctx.Request.Header.Get(constants.AuthorizationHeader))
+	if err != nil {
+		libs.HandleBadRequestErrWithMessage(ctx.Writer, err, "error in getting userId from token")
+		return
+	}
+	req.UserId = &userID
+
+	fmt.Printf("Creating report for user ID: %s\n", userID)
+
 	data, err := h.service.Report().Create(ctx.Request.Context(), m.ToReportApiToRepo(&req))
 	if err != nil {
 		libs.HandleInternalServerError(ctx.Writer, err)
 		return
 	}
+	fmt.Printf("Report created with ID: %s\n", data.Id)
 
-	libs.WriteJSONWithSuccess(ctx.Writer, m.ParseReportRepoToApi(data))
+	// Award coins for creating a report
+	if err := h.service.User().AddCoins(ctx.Request.Context(), *req.UserId, constants.CoinsForReport); err != nil {
+		// Log error but don't fail the request
+		// You might want to add proper logging here
+	}
+
+	// Get updated user data to include coins in response
+	user, err := h.service.User().GetByID(ctx.Request.Context(), *req.UserId)
+	if err != nil {
+		libs.HandleInternalServerError(ctx.Writer, err)
+		return
+	}
+
+	response := models.CreateReportResponse{
+		Report:     m.ParseReportRepoToResponse(data),
+		GivenCoins: constants.CoinsForReport,
+		TotalCoins: user.Coins,
+	}
+
+	fmt.Print("report created with ID: ", data.Id)
+
+	libs.WriteJSONWithSuccess(ctx.Writer, response)
 }
 
 func (h *handlerV1) UpdateReport(ctx *gin.Context) {

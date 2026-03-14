@@ -18,6 +18,7 @@ func ParseLoginWithTgOtpToResponse(token string, user *repo.User, verification *
 			Role:        user.Role,
 			TgID:        &user.TgID,
 			TgUserName:  user.TgUserName,
+			Coins:       user.Coins,
 		},
 		TelegramInfo: models.LoginWithTgOtpTelegramInfo{
 			TgUserName:     verification.TgUserName,
@@ -35,6 +36,7 @@ func ParseLoginWithPhoneToResponse(token string, user *repo.User) models.LoginRe
 			FullName:    user.FullName,
 			PhoneNumber: user.PhoneNumber,
 			Role:        user.Role,
+			Coins:       user.Coins,
 		},
 	}
 }
@@ -47,6 +49,7 @@ func ParseUserToResponse(user *repo.User) models.UserResponse {
 		Role:        user.Role,
 		TgID:        &user.TgID,
 		TgUserName:  user.TgUserName,
+		Coins:       user.Coins,
 		CreatedAt:   user.CreatedAt,
 		UpdatedAt:   user.UpdatedAt,
 	}

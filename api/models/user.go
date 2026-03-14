@@ -76,6 +76,7 @@ type LoginWithTgOtpUserResp struct {
 	Role        string    `json:"role"`
 	TgID        *int64    `json:"tg_id,omitempty"`
 	TgUserName  string    `json:"tg_user_name"`
+	Coins       int       `json:"coins"`
 }
 
 type LoginWithPhoneUserResp struct {
@@ -83,6 +84,7 @@ type LoginWithPhoneUserResp struct {
 	FullName    string    `json:"full_name"`
 	PhoneNumber string    `json:"phone_number"`
 	Role        string    `json:"role"`
+	Coins       int       `json:"coins"`
 }
 
 type LoginResponseWithPhone struct {
@@ -117,6 +119,7 @@ type UserResponse struct {
 	Role        string    `json:"role"`
 	TgID        *int64    `json:"tg_id,omitempty"`
 	TgUserName  string    `json:"tg_user_name"`
+	Coins       int       `json:"coins"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
 }

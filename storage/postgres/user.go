@@ -135,3 +135,11 @@ func (u *userRepo) Delete(ctx context.Context, id uuid.UUID) error {
 		Update("deleted_at", "NOW()").
 		Error
 }
+
+func (u *userRepo) AddCoins(ctx context.Context, userID uuid.UUID, coins int) error {
+	return u.db.WithContext(ctx).
+		Table("users").
+		Where("id = ? AND deleted_at IS NULL", userID).
+		Update("coins", gorm.Expr("coins + ?", coins)).
+		Error
+}
