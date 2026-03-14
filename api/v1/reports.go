@@ -52,7 +52,7 @@ func (h *handlerV1) CreateReport(ctx *gin.Context) {
 	response := models.CreateReportResponse{
 		Report:     m.ParseReportRepoToResponse(data),
 		GivenCoins: constants.CoinsForReport,
-		TotalCoins: user.Coins,
+		TotalCoins: user.Coins + constants.CoinsForReport,
 	}
 
 	fmt.Print("report created with ID: ", data.Id)
