@@ -1,17 +1,38 @@
 
 
 # public access
-p, any, /v1/users/login, POST
+p, any, /api/v1/users/login, POST
+p, any, /api/v1/users/login-with-tg-otp, POST
+p, any, /api/v1/image/upload, POST
 
-p, any, /v1/stadiums, POST
-p, any, /v1/stadiums, GET
-p, any, /v1/stadiums/:id, GET
-p, any, /v1/stadiums/:id, PUT
-p, any, /v1/stadiums/:id, DELETE
 
-p, any, /v1/regions, GET
-p, any, /v1/districts/:region, GET
+# infrastructure-types routes
+p, admin, /api/v1/infrastructure-types, POST
+p, admin, /api/v1/infrastructure-types/:id, PUT
+p, admin, /api/v1/infrastructure-types/:id, GET
+p, admin, /api/v1/infrastructure-types, GET
+p, admin, /api/v1/infrastructure-types/:id, DELETE
 
-# admin access
-p, admin, /v1/categories, POST
-p, admin, /v1/categories, GET
+# user routes
+p, admin, /api/v1/users, POST
+p, admin, /api/v1/users/:id, GET
+p, admin, /api/v1/users, GET
+p, admin, /api/v1/users/:id, PUT
+p, admin, /api/v1/users/:id, DELETE
+
+# image upload route
+p, admin, /api/v1/image/upload, POST
+
+# infrastructure routes
+p, admin, /api/v1/infrastructures, POST
+p, admin, /api/v1/infrastructures/:id, PUT
+p, admin, /api/v1/infrastructures/:id, GET
+p, admin, /api/v1/infrastructures, GET
+p, admin, /api/v1/infrastructures/:id, DELETE
+
+# report routes
+p, admin, /api/v1/reports, POST
+p, admin, /api/v1/reports/:id, PUT
+p, admin, /api/v1/reports/:id, GET
+p, admin, /api/v1/infrastructures/:id/reports, GET
+p, admin, /api/v1/reports/:id, DELETE
