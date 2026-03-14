@@ -23,20 +23,21 @@ func ParseInfrastructureRepoToApi(c *repo.Infrastructure) models.Infrastructure 
 	}
 
 	return models.Infrastructure{
-		Id:             c.Id,
-		TypeId:         c.TypeId,
-		Name:           c.Name,
-		Description:    c.Description,
-		Address:        c.Address,
-		Latitude:       c.Latitude,
-		Longitude:      c.Longitude,
-		Status:         c.Status,
-		OverallRating:  c.OverallRating,
-		ContractorName: c.ContractorName,
-		CheckItems:     checkItems,
-		CreatedAt:      c.CreatedAt,
-		UpdatedAt:      c.UpdatedAt,
-		DeletedAt:      c.DeletedAt,
+		Id:                   c.Id,
+		TypeId:               c.TypeId,
+		Name:                 c.Name,
+		Description:          c.Description,
+		Address:              c.Address,
+		Latitude:             c.Latitude,
+		Longitude:            c.Longitude,
+		Status:               c.Status,
+		OverallRating:        c.OverallRating,
+		ContractorName:       c.ContractorName,
+		VerifiedReportsCount: c.VerifiedReportsCount,
+		CheckItems:           checkItems,
+		CreatedAt:            c.CreatedAt,
+		UpdatedAt:            c.UpdatedAt,
+		DeletedAt:            c.DeletedAt,
 	}
 }
 
