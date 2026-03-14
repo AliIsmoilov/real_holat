@@ -30,6 +30,7 @@ CREATE TABLE users (
     role user_role DEFAULT 'citizen',
     tg_id BIGINT,
     tg_user_name VARCHAR(255),
+    password_hash TEXT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP WITH TIME ZONE

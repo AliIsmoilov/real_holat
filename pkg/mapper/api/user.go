@@ -3,6 +3,9 @@ package api
 import (
 	"real-holat/api/models"
 	"real-holat/storage/repo"
+
+	"github.com/google/uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func ParseLoginWithTgOtpToResponse(token string, user *repo.User, verification *repo.VerificationModel) models.LoginWithTgOtpResponse {
@@ -20,6 +23,18 @@ func ParseLoginWithTgOtpToResponse(token string, user *repo.User, verification *
 			TgUserName:     verification.TgUserName,
 			TgFirstName:    verification.TgFirstName,
 			TgLanguageCode: verification.TgLanguageCode,
+		},
+	}
+}
+
+func ParseLoginWithPhoneToResponse(token string, user *repo.User) models.LoginResponseWithPhone {
+	return models.LoginResponseWithPhone{
+		AccessToken: token,
+		User: models.LoginWithPhoneUserResp{
+			Id:          user.Id,
+			FullName:    user.FullName,
+			PhoneNumber: user.PhoneNumber,
+			Role:        user.Role,
 		},
 	}
 }
@@ -58,10 +73,13 @@ func ToUserAllReqFromQueryParams(limit, page int32, query string) repo.GetAllUse
 }
 
 func ParseUserCreateRequestToUser(req models.UserCreateRequest) repo.User {
+	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	return repo.User{
-		FullName:    req.FullName,
-		PhoneNumber: req.PhoneNumber,
-		Role:        req.Role,
+		Id:           uuid.New(),
+		FullName:     req.FullName,
+		PhoneNumber:  req.PhoneNumber,
+		PasswordHash: string(hashedPassword),
+		Role:         req.Role,
 	}
 }
 
@@ -71,6 +89,10 @@ func ParseUserUpdateRequestToUser(req models.UserUpdateRequest, existingUser *re
 	}
 	if req.PhoneNumber != "" {
 		existingUser.PhoneNumber = req.PhoneNumber
+	}
+	if req.Password != "" {
+		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+		existingUser.PasswordHash = string(hashedPassword)
 	}
 	if req.Role != "" {
 		existingUser.Role = req.Role

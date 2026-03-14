@@ -117,6 +117,20 @@ func HandleNotFoundErr(w http.ResponseWriter, err error) error {
 	return err
 }
 
+func HandleUnauthorizedErr(w http.ResponseWriter, err error) error {
+	if err == nil {
+		return nil
+	}
+
+	w.WriteHeader(http.StatusUnauthorized)
+	writeJSON(w, response{Error: true,
+		Data: errorInfo{
+			Status:  http.StatusUnauthorized,
+			Message: "unauthorized: " + err.Error(),
+		}})
+	return err
+}
+
 func WriteJSONWithSuccess(w http.ResponseWriter, data interface{}) {
 	data = response{
 		Error: false,

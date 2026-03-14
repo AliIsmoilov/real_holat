@@ -3,7 +3,6 @@ package v1
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"real-holat/api/models"
 	"real-holat/pkg/jwt"
 	"real-holat/pkg/libs"
@@ -14,40 +13,38 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func (h *handlerV1) Login(ctx *gin.Context) {
 	var req models.LoginRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		libs.HandleBadRequestErr(ctx.Writer, err)
 		return
 	}
 
 	user, err := h.service.User().GetByPhone(ctx.Request.Context(), req.Phone)
 	if err != nil {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "invalid credentials"})
+		libs.HandleUnauthorizedErr(ctx.Writer, fmt.Errorf("user not found or invalid credentials"))
 		return
 	}
 
-	// if err := bcrypt.CompareHashAndPassword(
-	// 	[]byte(user.PasswordHash),
-	// 	[]byte(req.Password),
-	// ); err != nil {
-	// 	ctx.JSON(http.StatusUnauthorized, gin.H{"message": "invalid credentials"})
-	// 	return
-	// }
-	if user.FullName != req.Password { // Temporary: using full_name as password for testing
-		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "password does not match"})
+	if err := bcrypt.CompareHashAndPassword(
+		[]byte(user.PasswordHash),
+		[]byte(req.Password),
+	); err != nil {
+		libs.HandleUnauthorizedErr(ctx.Writer, fmt.Errorf("invalid credentials"))
 		return
 	}
 
 	token, err := jwt.GenerateJWT(user)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		libs.HandleInternalServerError(ctx.Writer, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"access_token": token})
+	// ctx.JSON(http.StatusOK, gin.H{"access_token": token})
+	libs.WriteJSONWithSuccess(ctx.Writer, api.ParseLoginWithPhoneToResponse(token, user))
 }
 
 func (h *handlerV1) LoginWithTgOtp(c *gin.Context) {

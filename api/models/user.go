@@ -78,6 +78,18 @@ type LoginWithTgOtpUserResp struct {
 	TgUserName  string    `json:"tg_user_name"`
 }
 
+type LoginWithPhoneUserResp struct {
+	Id          uuid.UUID `json:"id"`
+	FullName    string    `json:"full_name"`
+	PhoneNumber string    `json:"phone_number"`
+	Role        string    `json:"role"`
+}
+
+type LoginResponseWithPhone struct {
+	User        LoginWithPhoneUserResp `json:"user"`
+	AccessToken string                 `json:"access_token"`
+}
+
 type LoginWithTgOtpTelegramInfo struct {
 	TgUserName     string `json:"tg_user_name"`
 	TgFirstName    string `json:"tg_first_name"`
@@ -87,12 +99,14 @@ type LoginWithTgOtpTelegramInfo struct {
 type UserCreateRequest struct {
 	FullName    string `json:"full_name" binding:"required"`
 	PhoneNumber string `json:"phone_number" binding:"required"`
+	Password    string `json:"password" binding:"required"`
 	Role        string `json:"role"`
 }
 
 type UserUpdateRequest struct {
 	FullName    string `json:"full_name"`
 	PhoneNumber string `json:"phone_number"`
+	Password    string `json:"password"`
 	Role        string `json:"role"`
 }
 
