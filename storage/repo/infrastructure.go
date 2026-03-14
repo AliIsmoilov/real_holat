@@ -37,7 +37,7 @@ type Infrastructure struct {
 	Status               string                     `gorm:"column:status"`
 	OverallRating        int                        `gorm:"column:overall_rating"`
 	ContractorName       string                     `gorm:"column:contractor_name"`
-	VerifiedReportsCount int                        `gorm:"column:verified_reports_count"`
+	VerifiedReportsCount int                        `gorm:"-"`
 	CheckItems           []*InfrastructureCheckItem `gorm:"foreignKey:InfrastructureId"`
 	CreatedAt            time.Time                  `gorm:"column:created_at"`
 	UpdatedAt            time.Time                  `gorm:"column:updated_at"`

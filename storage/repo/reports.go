@@ -45,9 +45,16 @@ type VerifyReportResponse struct {
 }
 
 type MainPageStats struct {
-	TotalReportsCount      int64 `json:"total_reports"`
-	VerifiedReportsCount   int64 `json:"verified_reports"`
-	ParticipatedUsersCount int64 `json:"participated_users"`
+	TotalReportsCount      int64             `json:"total_reports"`
+	VerifiedReportsCount   int64             `json:"verified_reports"`
+	ParticipatedUsersCount int64             `json:"participated_users"`
+	AggregationReport      AggregationReport `json:"aggregation_report"`
+}
+
+type AggregationReport struct {
+	TotalInfrastructures             int64   `json:"total_infrastructures"`
+	TotalCheckedInfrastructures      int64   `json:"total_checked_infrastructures"`
+	InfrastructuresCheckedPercentage float64 `json:"infrastructures_checked_percentage"`
 }
 
 type ReportVerification struct {

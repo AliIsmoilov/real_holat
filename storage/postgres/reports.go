@@ -124,5 +124,24 @@ func (r *reportRepo) MainPageStats(ctx context.Context) (*repo.MainPageStats, er
 		return nil, err
 	}
 
+	if err := r.db.WithContext(ctx).
+		Table("infrastructures").
+		Where("deleted_at IS NULL").
+		Count(&stats.AggregationReport.TotalInfrastructures).Error; err != nil {
+		return nil, err
+	}
+
+	if err := r.db.WithContext(ctx).
+		Table("reports").
+		Where("deleted_at IS NULL").
+		Distinct("infrastructure_id").
+		Count(&stats.AggregationReport.TotalCheckedInfrastructures).Error; err != nil {
+		return nil, err
+	}
+
+	if stats.AggregationReport.TotalInfrastructures > 0 {
+		stats.AggregationReport.InfrastructuresCheckedPercentage = (float64(stats.AggregationReport.TotalCheckedInfrastructures) / float64(stats.AggregationReport.TotalInfrastructures)) * 100
+	}
+
 	return &stats, nil
 }
