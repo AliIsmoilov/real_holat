@@ -27,7 +27,7 @@ p, admin, /api/v1/image/upload, POST
 p, admin, /api/v1/infrastructures, POST
 p, admin, /api/v1/infrastructures/:id, PUT
 p, admin, /api/v1/infrastructures/:id, GET
-p, admin, /api/v1/infrastructures, GET
+p, any, /api/v1/infrastructures, GET
 p, admin, /api/v1/infrastructures/:id, DELETE
 
 # report routes
