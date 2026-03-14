@@ -97,3 +97,32 @@ func (r *reportRepo) ReportVerification(ctx context.Context, req repo.ReportVeri
 
 	return req.Id, nil
 }
+
+func (r *reportRepo) MainPageStats(ctx context.Context) (*repo.MainPageStats, error) {
+
+	var stats repo.MainPageStats
+
+	if err := r.db.WithContext(ctx).
+		Table("reports").
+		Where("deleted_at IS NULL").
+		Count(&stats.TotalReportsCount).Error; err != nil {
+		return nil, err
+	}
+
+	if err := r.db.WithContext(ctx).
+		Table("reports").
+		Where("deleted_at IS NULL AND verification_count > 0").
+		Count(&stats.VerifiedReportsCount).Error; err != nil {
+		return nil, err
+	}
+
+	if err := r.db.WithContext(ctx).
+		Table("reports").
+		Where("deleted_at IS NULL").
+		Distinct("user_id").
+		Count(&stats.ParticipatedUsersCount).Error; err != nil {
+		return nil, err
+	}
+
+	return &stats, nil
+}

@@ -16,6 +16,8 @@ type ReportI interface {
 	Delete(ctx context.Context, id uuid.UUID) error
 	Verify(ctx context.Context, id uuid.UUID) (*Report, error)
 	ReportVerification(ctx context.Context, req ReportVerification) (uuid.UUID, error)
+
+	MainPageStats(ctx context.Context) (*MainPageStats, error)
 }
 
 type Report struct {
@@ -40,6 +42,12 @@ type VerifyReportReq struct {
 type VerifyReportResponse struct {
 	GivenCoins int `json:"given_coins"`
 	TotalCoins int `json:"total_coins"`
+}
+
+type MainPageStats struct {
+	TotalReportsCount      int64 `json:"total_reports"`
+	VerifiedReportsCount   int64 `json:"verified_reports"`
+	ParticipatedUsersCount int64 `json:"participated_users"`
 }
 
 type ReportVerification struct {

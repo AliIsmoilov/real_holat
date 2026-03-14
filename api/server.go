@@ -82,5 +82,8 @@ func New(h *Handler) *gin.Engine {
 	apiV1.DELETE("/reports/:id", handlerV1.DeleteReport)
 	apiV1.POST("/reports/:id/verify", handlerV1.VerifyReport)
 
+	// stats routes
+	apiV1.GET("/stats/main-page", handlerV1.MainPageStats)
+
 	return engine
 }

@@ -17,6 +17,8 @@ type ReportServiceI interface {
 	Update(ctx context.Context, req *repo.Report) (*repo.Report, error)
 	Delete(ctx context.Context, id string) error
 	Verify(ctx context.Context, req *repo.VerifyReportReq) (*repo.VerifyReportResponse, error)
+
+	MainPageStats(ctx context.Context) (*repo.MainPageStats, error)
 }
 
 type reportService struct {
