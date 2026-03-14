@@ -96,6 +96,18 @@ CREATE TABLE report_details (
 );
 CREATE TRIGGER update_report_details_updated_at BEFORE UPDATE ON report_details FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
+CREATE TABLE report_verifications (
+    id UUID PRIMARY KEY,
+    report_id UUID NOT NULL,
+    user_id UUID NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    FOREIGN KEY (report_id) REFERENCES reports(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE(report_id, user_id)
+);
+CREATE TRIGGER update_report_verifications_updated_at BEFORE UPDATE ON report_verifications FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
+
+
 -- 9. INDEXES (Optimized for Soft Deletes)
 CREATE INDEX idx_infra_active ON infrastructures(latitude, longitude) WHERE deleted_at IS NULL;
 CREATE INDEX idx_reports_active ON reports(infrastructure_id) WHERE deleted_at IS NULL;

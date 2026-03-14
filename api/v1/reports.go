@@ -11,6 +11,7 @@ import (
 	"real-holat/storage/repo"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func (h *handlerV1) CreateReport(ctx *gin.Context) {
@@ -37,7 +38,7 @@ func (h *handlerV1) CreateReport(ctx *gin.Context) {
 	fmt.Printf("Report created with ID: %s\n", data.Id)
 
 	// Award coins for creating a report
-	if err := h.service.User().AddCoins(ctx.Request.Context(), *req.UserId, constants.CoinsForReport); err != nil {
+	if err := h.service.User().AddCoins(ctx.Request.Context(), *req.UserId, constants.CoinsForReportCreate); err != nil {
 		// Log error but don't fail the request
 		// You might want to add proper logging here
 	}
@@ -51,7 +52,7 @@ func (h *handlerV1) CreateReport(ctx *gin.Context) {
 
 	response := models.CreateReportResponse{
 		Report:     m.ParseReportRepoToResponse(data),
-		GivenCoins: constants.CoinsForReport,
+		GivenCoins: constants.CoinsForReportCreate,
 		TotalCoins: user.Coins,
 	}
 
@@ -149,4 +150,25 @@ func (h *handlerV1) GetReportsByInfrastructureId(ctx *gin.Context) {
 	}
 
 	libs.WriteJSONWithSuccess(ctx.Writer, m.ToReportListRepoToApi(data))
+}
+
+func (h *handlerV1) VerifyReport(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	userId, err := libs.GetUserIDFromToken(ctx.Request.Header.Get(constants.AuthorizationHeader))
+	if err != nil {
+		libs.HandleBadRequestErrWithMessage(ctx.Writer, err, "error in getting userId from token")
+		return
+	}
+
+	response, err := h.service.Report().Verify(ctx.Request.Context(), &repo.VerifyReportReq{
+		ReportId: uuid.MustParse(id),
+		UserId:   userId,
+	})
+	if err != nil {
+		libs.HandleInternalServerError(ctx.Writer, err)
+		return
+	}
+
+	libs.WriteJSONWithSuccess(ctx.Writer, response)
 }

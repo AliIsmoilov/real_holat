@@ -9,16 +9,17 @@ import (
 
 func ParseReportRepoToApi(c *repo.Report) models.Report {
 	return models.Report{
-		Id:               c.Id,
-		UserId:           c.UserId,
-		InfrastructureId: c.InfrastructureId,
-		PhotoUrl:         c.PhotoUrl,
-		Comment:          c.Comment,
-		LatAtSubmission:  c.LatAtSubmission,
-		LongAtSubmission: c.LongAtSubmission,
-		CreatedAt:        c.CreatedAt,
-		UpdatedAt:        c.UpdatedAt,
-		DeletedAt:        c.DeletedAt,
+		Id:                c.Id,
+		UserId:            c.UserId,
+		InfrastructureId:  c.InfrastructureId,
+		PhotoUrl:          c.PhotoUrl,
+		Comment:           c.Comment,
+		LatAtSubmission:   c.LatAtSubmission,
+		LongAtSubmission:  c.LongAtSubmission,
+		VerificationCount: c.VerificationCount,
+		CreatedAt:         c.CreatedAt,
+		UpdatedAt:         c.UpdatedAt,
+		DeletedAt:         c.DeletedAt,
 	}
 }
 
@@ -30,9 +31,8 @@ func ParseReportRepoToResponse(c *repo.Report) *models.ReportResponse {
 		PhotoUrl:         c.PhotoUrl,
 		Comment:          c.Comment,
 		LatAtSubmission:  c.LatAtSubmission,
-		LongAtSubmission: c.LongAtSubmission,
-		CreatedAt:        c.CreatedAt,
-		UpdatedAt:        c.UpdatedAt,
+		LongAtSubmission: c.LongAtSubmission, VerificationCount: c.VerificationCount, CreatedAt: c.CreatedAt,
+		UpdatedAt: c.UpdatedAt,
 	}
 }
 

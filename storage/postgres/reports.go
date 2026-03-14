@@ -67,3 +67,33 @@ func (r *reportRepo) Delete(ctx context.Context, id uuid.UUID) error {
 	}
 	return nil
 }
+
+func (r *reportRepo) Verify(ctx context.Context, id uuid.UUID) (*repo.Report, error) {
+	var report repo.Report
+	if err := r.db.WithContext(ctx).
+		Table("reports").
+		Where("id = ? AND deleted_at IS NULL", id).
+		First(&report).Error; err != nil {
+		return nil, err
+	}
+
+	// Increment verification count
+	report.VerificationCount++
+	if err := r.db.WithContext(ctx).
+		Table("reports").
+		Where("id = ?", id).
+		Update("verification_count", report.VerificationCount).Error; err != nil {
+		return nil, err
+	}
+
+	return &report, nil
+}
+
+func (r *reportRepo) ReportVerification(ctx context.Context, req repo.ReportVerification) (uuid.UUID, error) {
+	if err := r.db.WithContext(ctx).Table("report_verifications").
+		Create(&req).Error; err != nil {
+		return uuid.Nil, err
+	}
+
+	return req.Id, nil
+}

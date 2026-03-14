@@ -80,6 +80,7 @@ func New(h *Handler) *gin.Engine {
 	apiV1.GET("/reports/:id", handlerV1.GetReportById)
 	apiV1.GET("/infrastructures/:id/reports", handlerV1.GetReportsByInfrastructureId)
 	apiV1.DELETE("/reports/:id", handlerV1.DeleteReport)
+	apiV1.POST("/reports/:id/verify", handlerV1.VerifyReport)
 
 	return engine
 }

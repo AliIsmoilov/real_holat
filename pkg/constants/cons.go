@@ -6,7 +6,8 @@ const (
 )
 
 const (
-	CoinsForReport = 10
+	CoinsForReportCreate       = 10
+	CoinsForReportVerification = 5
 )
 
 const (
