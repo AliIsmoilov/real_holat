@@ -48,6 +48,17 @@ func (r *infrastructureRepo) Create(ctx context.Context, req repo.Infrastructure
 		return nil, err
 	}
 
+	// // Reload with preloads
+	// if err := r.db.WithContext(ctx).
+	// 	Table("infrastructures").
+	// 	Preload("CheckItems", "deleted_at IS NULL").
+	// 	Preload("InfrastructureTypeInfo", "deleted_at IS NULL").
+	// 	Where("id = ? AND deleted_at IS NULL", req.Id).
+	// 	First(&req).
+	// 	Error; err != nil {
+	// 	return nil, err
+	// }
+
 	return &req, nil
 }
 
@@ -57,6 +68,7 @@ func (r *infrastructureRepo) GetByID(ctx context.Context, id uuid.UUID) (*repo.I
 	if err := r.db.WithContext(ctx).
 		Table("infrastructures").
 		Preload("CheckItems", "deleted_at IS NULL").
+		Preload("InfrastructureTypeInfo", "deleted_at IS NULL").
 		Where("id = ? AND deleted_at IS NULL", id).
 		First(&infrastructure).
 		Error; err != nil {
@@ -81,6 +93,7 @@ func (r *infrastructureRepo) GetAll(ctx context.Context, req repo.GetAllInfrastr
 	query := r.db.WithContext(ctx).
 		Table("infrastructures").
 		Preload("CheckItems", "deleted_at IS NULL").
+		Preload("InfrastructureTypeInfo", "deleted_at IS NULL").
 		Where("deleted_at IS NULL")
 
 	if req.Query != "" {
@@ -121,6 +134,17 @@ func (r *infrastructureRepo) Update(ctx context.Context, req repo.Infrastructure
 		Table("infrastructures").
 		Where("id = ?", req.Id).
 		Updates(&req).
+		Error; err != nil {
+		return nil, err
+	}
+
+	// Reload with preloads
+	if err := r.db.WithContext(ctx).
+		Table("infrastructures").
+		Preload("CheckItems", "deleted_at IS NULL").
+		Preload("InfrastructureTypeInfo", "deleted_at IS NULL").
+		Where("id = ? AND deleted_at IS NULL", req.Id).
+		First(&req).
 		Error; err != nil {
 		return nil, err
 	}

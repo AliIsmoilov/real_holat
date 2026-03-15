@@ -24,12 +24,9 @@ type GetInfrastructureTypesListResp struct {
 }
 
 type InfrastructureType struct {
-	Id        uuid.UUID `json:"id"`
-	Name      string    `json:"name"`
-	IconUrl   string    `json:"icon_url"`
-	CreatedAt string    `json:"created_at"`
-	UpdatedAt string    `json:"updated_at"`
-	DeletedAt string    `json:"deleted_at"`
+	Id      uuid.UUID `json:"id"`
+	Name    string    `json:"name"`
+	IconUrl string    `json:"icon_url"`
 }
 
 type InfrastructureTypeCreateReq struct {

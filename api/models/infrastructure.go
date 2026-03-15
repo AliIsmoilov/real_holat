@@ -17,6 +17,15 @@ type InfrastructureCheckItem struct {
 	DeletedAt        *time.Time `json:"deleted_at"`
 }
 
+// type InfrastructureType struct {
+// 	Id        uuid.UUID  `json:"id"`
+// 	Name      string     `json:"name"`
+// 	IconUrl   string     `json:"icon_url"`
+// 	CreatedAt time.Time  `json:"created_at"`
+// 	UpdatedAt time.Time  `json:"updated_at"`
+// 	DeletedAt *time.Time `json:"deleted_at"`
+// }
+
 type InfrastructureCheckItemCreateReq struct {
 	Category string `json:"category"`
 	Question string `json:"question" binding:"required"`
@@ -24,21 +33,22 @@ type InfrastructureCheckItemCreateReq struct {
 }
 
 type Infrastructure struct {
-	Id                   uuid.UUID                  `json:"id"`
-	TypeId               uuid.UUID                  `json:"type_id"`
-	Name                 string                     `json:"name"`
-	Description          string                     `json:"description"`
-	Address              string                     `json:"address"`
-	Latitude             float64                    `json:"latitude"`
-	Longitude            float64                    `json:"longitude"`
-	Status               string                     `json:"status"`
-	OverallRating        int                        `json:"overall_rating"`
-	ContractorName       string                     `json:"contractor_name"`
-	VerifiedReportsCount int                        `json:"verified_reports_count"`
-	CheckItems           []*InfrastructureCheckItem `json:"check_items"`
-	CreatedAt            time.Time                  `json:"created_at"`
-	UpdatedAt            time.Time                  `json:"updated_at"`
-	DeletedAt            *time.Time                 `json:"deleted_at"`
+	Id                     uuid.UUID                  `json:"id"`
+	TypeId                 uuid.UUID                  `json:"type_id"`
+	Name                   string                     `json:"name"`
+	Description            string                     `json:"description"`
+	Address                string                     `json:"address"`
+	Latitude               float64                    `json:"latitude"`
+	Longitude              float64                    `json:"longitude"`
+	Status                 string                     `json:"status"`
+	OverallRating          int                        `json:"overall_rating"`
+	ContractorName         string                     `json:"contractor_name"`
+	VerifiedReportsCount   int                        `json:"verified_reports_count"`
+	CheckItems             []*InfrastructureCheckItem `json:"check_items"`
+	InfrastructureTypeInfo *InfrastructureType        `json:"infrastructure_type_info"`
+	CreatedAt              time.Time                  `json:"created_at"`
+	UpdatedAt              time.Time                  `json:"updated_at"`
+	DeletedAt              *time.Time                 `json:"deleted_at"`
 }
 
 type InfrastructureCreateReq struct {

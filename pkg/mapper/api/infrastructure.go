@@ -22,22 +22,32 @@ func ParseInfrastructureRepoToApi(c *repo.Infrastructure) models.Infrastructure 
 		})
 	}
 
+	var typeInfo *models.InfrastructureType
+	if c.InfrastructureTypeInfo != nil {
+		typeInfo = &models.InfrastructureType{
+			Id:      c.InfrastructureTypeInfo.Id,
+			Name:    c.InfrastructureTypeInfo.Name,
+			IconUrl: c.InfrastructureTypeInfo.IconUrl,
+		}
+	}
+
 	return models.Infrastructure{
-		Id:                   c.Id,
-		TypeId:               c.TypeId,
-		Name:                 c.Name,
-		Description:          c.Description,
-		Address:              c.Address,
-		Latitude:             c.Latitude,
-		Longitude:            c.Longitude,
-		Status:               c.Status,
-		OverallRating:        c.OverallRating,
-		ContractorName:       c.ContractorName,
-		VerifiedReportsCount: c.VerifiedReportsCount,
-		CheckItems:           checkItems,
-		CreatedAt:            c.CreatedAt,
-		UpdatedAt:            c.UpdatedAt,
-		DeletedAt:            c.DeletedAt,
+		Id:                     c.Id,
+		TypeId:                 c.TypeId,
+		Name:                   c.Name,
+		Description:            c.Description,
+		Address:                c.Address,
+		Latitude:               c.Latitude,
+		Longitude:              c.Longitude,
+		Status:                 c.Status,
+		OverallRating:          c.OverallRating,
+		ContractorName:         c.ContractorName,
+		VerifiedReportsCount:   c.VerifiedReportsCount,
+		CheckItems:             checkItems,
+		InfrastructureTypeInfo: typeInfo,
+		CreatedAt:              c.CreatedAt,
+		UpdatedAt:              c.UpdatedAt,
+		DeletedAt:              c.DeletedAt,
 	}
 }
 

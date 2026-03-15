@@ -27,21 +27,22 @@ type InfrastructureCheckItem struct {
 }
 
 type Infrastructure struct {
-	Id                   uuid.UUID                  `gorm:"column:id"`
-	TypeId               uuid.UUID                  `gorm:"column:type_id"`
-	Name                 string                     `gorm:"column:name"`
-	Description          string                     `gorm:"column:description"`
-	Address              string                     `gorm:"column:address"`
-	Latitude             float64                    `gorm:"column:latitude"`
-	Longitude            float64                    `gorm:"column:longitude"`
-	Status               string                     `gorm:"column:status"`
-	OverallRating        int                        `gorm:"column:overall_rating"`
-	ContractorName       string                     `gorm:"column:contractor_name"`
-	VerifiedReportsCount int                        `gorm:"-"`
-	CheckItems           []*InfrastructureCheckItem `gorm:"foreignKey:InfrastructureId"`
-	CreatedAt            time.Time                  `gorm:"column:created_at"`
-	UpdatedAt            time.Time                  `gorm:"column:updated_at"`
-	DeletedAt            *time.Time                 `gorm:"column:deleted_at"`
+	Id                     uuid.UUID                  `gorm:"column:id"`
+	TypeId                 uuid.UUID                  `gorm:"column:type_id"`
+	Name                   string                     `gorm:"column:name"`
+	Description            string                     `gorm:"column:description"`
+	Address                string                     `gorm:"column:address"`
+	Latitude               float64                    `gorm:"column:latitude"`
+	Longitude              float64                    `gorm:"column:longitude"`
+	Status                 string                     `gorm:"column:status"`
+	OverallRating          int                        `gorm:"column:overall_rating"`
+	ContractorName         string                     `gorm:"column:contractor_name"`
+	VerifiedReportsCount   int                        `gorm:"-"`
+	CheckItems             []*InfrastructureCheckItem `gorm:"foreignKey:InfrastructureId"`
+	InfrastructureTypeInfo *InfrastructureType        `gorm:"foreignKey:TypeId"`
+	CreatedAt              time.Time                  `gorm:"column:created_at"`
+	UpdatedAt              time.Time                  `gorm:"column:updated_at"`
+	DeletedAt              *time.Time                 `gorm:"column:deleted_at"`
 }
 
 type GetAllInfrastructuresReq struct {
