@@ -16,6 +16,7 @@ p, admin, /api/v1/infrastructure-types/:id, DELETE
 # user routes
 p, admin, /api/v1/users, POST
 p, admin, /api/v1/users/:id, GET
+p, any, /api/v1/users/:id, GET
 p, admin, /api/v1/users, GET
 p, admin, /api/v1/users/:id, PUT
 p, admin, /api/v1/users/:id, DELETE
