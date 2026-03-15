@@ -102,9 +102,16 @@ func (r *infrastructureRepo) GetAll(ctx context.Context, req repo.GetAllInfrastr
 	}
 
 	orderBy := "created_at DESC"
-	if req.Condition == "worst" {
+	// if req.Condition == "worst" {
+	// 	orderBy = "overall_rating ASC"
+	// } else if req.Condition == "best" {
+	// 	orderBy = "overall_rating DESC"
+	// }
+	if req.Condition == "best" {
+		query = query.Where("EXISTS (SELECT 1 FROM reports WHERE reports.infrastructure_id = infrastructures.id AND reports.deleted_at IS NULL)")
 		orderBy = "overall_rating ASC"
-	} else if req.Condition == "best" {
+	} else if req.Condition == "worst" {
+		query = query.Where("NOT EXISTS (SELECT 1 FROM reports WHERE reports.infrastructure_id = infrastructures.id AND reports.deleted_at IS NULL)")
 		orderBy = "overall_rating DESC"
 	}
 
