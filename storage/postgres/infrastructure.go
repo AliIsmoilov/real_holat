@@ -130,6 +130,18 @@ func (r *infrastructureRepo) GetAll(ctx context.Context, req repo.GetAllInfrastr
 		return nil, err
 	}
 
+	for _, infrastructure := range infrastructures {
+		var reportsCount int64
+		if err := r.db.WithContext(ctx).
+			Table("reports").
+			Where("infrastructure_id = ? AND deleted_at IS NULL", infrastructure.Id).
+			Count(&reportsCount).
+			Error; err != nil {
+			return nil, err
+		}
+		infrastructure.ReportsCount = int(reportsCount)
+	}
+
 	return &repo.GetAllInfrastructuresResp{
 		Infrastructures: infrastructures,
 		Count:           count,

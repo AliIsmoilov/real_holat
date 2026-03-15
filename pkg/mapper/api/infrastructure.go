@@ -42,7 +42,7 @@ func ParseInfrastructureRepoToApi(c *repo.Infrastructure) models.Infrastructure 
 		Status:                 c.Status,
 		OverallRating:          c.OverallRating,
 		ContractorName:         c.ContractorName,
-		VerifiedReportsCount:   c.VerifiedReportsCount,
+		VerifiedReportsCount:   c.ReportsCount,
 		CheckItems:             checkItems,
 		InfrastructureTypeInfo: typeInfo,
 		CreatedAt:              c.CreatedAt,
