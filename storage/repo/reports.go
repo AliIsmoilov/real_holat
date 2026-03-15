@@ -29,6 +29,9 @@ type Report struct {
 	LatAtSubmission   float64        `gorm:"column:lat_at_submission"`
 	LongAtSubmission  float64        `gorm:"column:long_at_submission"`
 	VerificationCount int            `gorm:"column:verification_count;default:0"`
+	IsPublic          bool           `gorm:"column:is_public;default:true"`
+	GroupName         string         `gorm:"column:group_name"`
+	OrganizationName  string         `gorm:"column:organization_name"`
 	CreatedAt         time.Time      `gorm:"column:created_at"`
 	UpdatedAt         time.Time      `gorm:"column:updated_at"`
 	DeletedAt         *time.Time     `gorm:"column:deleted_at"`

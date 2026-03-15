@@ -17,6 +17,9 @@ func ParseReportRepoToApi(c *repo.Report) models.Report {
 		LatAtSubmission:   c.LatAtSubmission,
 		LongAtSubmission:  c.LongAtSubmission,
 		VerificationCount: c.VerificationCount,
+		IsPublic:          c.IsPublic,
+		GroupName:         c.GroupName,
+		OrganizationName:  c.OrganizationName,
 		CreatedAt:         c.CreatedAt,
 		UpdatedAt:         c.UpdatedAt,
 		DeletedAt:         c.DeletedAt,
@@ -25,14 +28,19 @@ func ParseReportRepoToApi(c *repo.Report) models.Report {
 
 func ParseReportRepoToResponse(c *repo.Report) *models.ReportResponse {
 	return &models.ReportResponse{
-		Id:               c.Id,
-		UserId:           c.UserId,
-		InfrastructureId: c.InfrastructureId,
-		PhotoUrl:         c.PhotoUrl,
-		Comment:          c.Comment,
-		LatAtSubmission:  c.LatAtSubmission,
-		LongAtSubmission: c.LongAtSubmission, VerificationCount: c.VerificationCount, CreatedAt: c.CreatedAt,
-		UpdatedAt: c.UpdatedAt,
+		Id:                c.Id,
+		UserId:            c.UserId,
+		InfrastructureId:  c.InfrastructureId,
+		PhotoUrl:          c.PhotoUrl,
+		Comment:           c.Comment,
+		LatAtSubmission:   c.LatAtSubmission,
+		LongAtSubmission:  c.LongAtSubmission,
+		VerificationCount: c.VerificationCount,
+		IsPublic:          c.IsPublic,
+		GroupName:         c.GroupName,
+		OrganizationName:  c.OrganizationName,
+		CreatedAt:         c.CreatedAt,
+		UpdatedAt:         c.UpdatedAt,
 	}
 }
 
@@ -45,6 +53,9 @@ func ToReportApiToRepo(req *models.ReportCreateReq) *repo.Report {
 		Comment:          req.Comment,
 		LatAtSubmission:  req.LatAtSubmission,
 		LongAtSubmission: req.LongAtSubmission,
+		IsPublic:         req.IsPublic,
+		GroupName:        req.GroupName,
+		OrganizationName: req.OrganizationName,
 	}
 }
 

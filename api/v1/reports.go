@@ -87,6 +87,15 @@ func (h *handlerV1) UpdateReport(ctx *gin.Context) {
 	if req.LongAtSubmission != 0 {
 		report.LongAtSubmission = req.LongAtSubmission
 	}
+	if req.IsPublic != report.IsPublic {
+		report.IsPublic = req.IsPublic
+	}
+	if req.GroupName != "" {
+		report.GroupName = req.GroupName
+	}
+	if req.OrganizationName != "" {
+		report.OrganizationName = req.OrganizationName
+	}
 
 	data, err := h.service.Report().Update(ctx.Request.Context(), report)
 	if err != nil {
