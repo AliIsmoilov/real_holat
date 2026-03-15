@@ -96,6 +96,8 @@ func (h *handlerV1) GetListInfrastructures(ctx *gin.Context) {
 	limit := ctx.DefaultQuery("limit", "")
 	page := ctx.DefaultQuery("page", "")
 	query := ctx.DefaultQuery("query", "")
+	tops := ctx.DefaultQuery("tops", "")
+	condition := ctx.DefaultQuery("condition", "")
 
 	limitInt, err := strconv.Atoi(limit)
 	if err != nil {
@@ -105,11 +107,17 @@ func (h *handlerV1) GetListInfrastructures(ctx *gin.Context) {
 	if err != nil {
 		pageInt = 1 // default page
 	}
+	topsInt, err := strconv.Atoi(tops)
+	if err != nil {
+		topsInt = 0 // default tops
+	}
 
 	data, err := h.service.Infrastructure().GetAll(ctx.Request.Context(), repo.GetAllInfrastructuresReq{
-		Limit: int32(limitInt),
-		Page:  int32(pageInt),
-		Query: query,
+		Limit:     int32(limitInt),
+		Page:      int32(pageInt),
+		Query:     query,
+		Tops:      int32(topsInt),
+		Condition: condition,
 	})
 	if err != nil {
 		libs.HandleInternalServerError(ctx.Writer, err)

@@ -88,14 +88,25 @@ func (r *infrastructureRepo) GetAll(ctx context.Context, req repo.GetAllInfrastr
 			"%"+req.Query+"%", "%"+req.Query+"%", "%"+req.Query+"%")
 	}
 
-	if req.Page > 0 && req.Limit > 0 {
+	orderBy := "created_at DESC"
+	if req.Condition == "worst" {
+		orderBy = "overall_rating ASC"
+	} else if req.Condition == "best" {
+		orderBy = "overall_rating DESC"
+	}
+
+	query = query.Order(orderBy)
+
+	if req.Tops > 0 {
+		query = query.Limit(int(req.Tops))
+	} else if req.Page > 0 && req.Limit > 0 {
 		offset := (req.Page - 1) * req.Limit
 		query = query.Offset(int(offset)).Limit(int(req.Limit))
 	} else if req.Limit > 0 {
 		query = query.Limit(int(req.Limit))
 	}
 
-	if err := query.Order("created_at DESC").Find(&infrastructures).Error; err != nil {
+	if err := query.Find(&infrastructures).Error; err != nil {
 		return nil, err
 	}
 

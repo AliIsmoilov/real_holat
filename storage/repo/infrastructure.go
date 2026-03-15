@@ -45,9 +45,11 @@ type Infrastructure struct {
 }
 
 type GetAllInfrastructuresReq struct {
-	Limit int32
-	Page  int32
-	Query string
+	Limit     int32
+	Page      int32
+	Query     string
+	Tops      int32
+	Condition string
 }
 
 type GetAllInfrastructuresResp struct {
