@@ -35,9 +35,10 @@ func (r *reportRepo) GetByID(ctx context.Context, id uuid.UUID) (*repo.Report, e
 
 func (r *reportRepo) GetByInfrastructureID(ctx context.Context, infrastructureId uuid.UUID, req repo.GetReportsByInfrastructureReq) (*repo.GetReportsByInfrastructureResp, error) {
 	var reports []*repo.Report
-	var count int64
+	var count, totalParticipants int64
 
-	query := r.db.WithContext(ctx).Table("reports").Where("infrastructure_id = ? AND deleted_at IS NULL", infrastructureId)
+	query := r.db.WithContext(ctx).Table("reports").
+		Where("infrastructure_id = ? AND deleted_at IS NULL", infrastructureId)
 
 	if err := query.Model(&repo.Report{}).Count(&count).Error; err != nil {
 		return nil, err
@@ -48,9 +49,31 @@ func (r *reportRepo) GetByInfrastructureID(ctx context.Context, infrastructureId
 		return nil, err
 	}
 
+	r.db.WithContext(ctx).Table("reports").
+		Where("infrastructure_id = ? AND deleted_at IS NULL AND verification_count > 0", infrastructureId).
+		Distinct("user_id").
+		Count(&totalParticipants)
+
+	var totalReports int64
+	r.db.WithContext(ctx).Table("reports").
+		Where("infrastructure_id = ? AND deleted_at IS NULL", infrastructureId).
+		Count(&totalReports)
+
+	var verifiedReportsCount int64
+	r.db.WithContext(ctx).Table("reports").
+		Where("infrastructure_id = ? AND deleted_at IS NULL AND verification_count > 0", infrastructureId).
+		Count(&verifiedReportsCount)
+
+	minusRate := float64(verifiedReportsCount) / float64(totalReports) * 100
+	rating100 := 100 - minusRate
+	rating5 := rating100 * 5 / 100
 	return &repo.GetReportsByInfrastructureResp{
-		Reports: reports,
-		Count:   count,
+		Reports:                reports,
+		Count:                  count,
+		ParticipatedUsersCount: totalParticipants,
+		TotalReportsCount:      totalReports,
+		VerifiedReportsCount:   verifiedReportsCount,
+		InfrastructureRating:   rating5,
 	}, nil
 }
 

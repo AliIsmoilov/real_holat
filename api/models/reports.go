@@ -62,8 +62,12 @@ type ReportResponse struct {
 }
 
 type ReportListResponse struct {
-	Reports []*Report `json:"reports"`
-	Count   int64     `json:"count"`
+	Reports                []*Report `json:"reports"`
+	Count                  int64     `json:"count"`
+	ParticipatedUsersCount int64     `json:"participated_users_count"`
+	TotalReportsCount      int64     `json:"total_reports_count"`
+	VerifiedReportsCount   int64     `json:"verified_reports_count"`
+	InfrastructureRating   float64   `json:"infrastructure_rating"`
 }
 
 type CreateReportResponse struct {

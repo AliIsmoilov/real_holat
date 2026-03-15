@@ -73,6 +73,10 @@ type GetReportsByInfrastructureReq struct {
 }
 
 type GetReportsByInfrastructureResp struct {
-	Reports []*Report
-	Count   int64
+	Reports                []*Report
+	Count                  int64
+	ParticipatedUsersCount int64
+	TotalReportsCount      int64
+	VerifiedReportsCount   int64
+	InfrastructureRating   float64
 }

@@ -61,8 +61,12 @@ func ToReportApiToRepo(req *models.ReportCreateReq) *repo.Report {
 
 func ToReportListRepoToApi(data *repo.GetReportsByInfrastructureResp) models.ReportListResponse {
 	resp := models.ReportListResponse{
-		Reports: make([]*models.Report, 0),
-		Count:   data.Count,
+		Reports:                make([]*models.Report, 0),
+		Count:                  data.Count,
+		ParticipatedUsersCount: data.ParticipatedUsersCount,
+		TotalReportsCount:      data.TotalReportsCount,
+		VerifiedReportsCount:   data.VerifiedReportsCount,
+		InfrastructureRating:   data.InfrastructureRating,
 	}
 	for _, elem := range data.Reports {
 		report := ParseReportRepoToApi(elem)
