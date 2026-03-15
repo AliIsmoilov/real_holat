@@ -130,7 +130,7 @@ func (r *infrastructureRepo) GetAll(ctx context.Context, req repo.GetAllInfrastr
 		return nil, err
 	}
 
-	for _, infrastructure := range infrastructures {
+	for i, infrastructure := range infrastructures {
 		var reportsCount int64
 		if err := r.db.WithContext(ctx).
 			Table("reports").
@@ -139,7 +139,7 @@ func (r *infrastructureRepo) GetAll(ctx context.Context, req repo.GetAllInfrastr
 			Error; err != nil {
 			return nil, err
 		}
-		infrastructure.ReportsCount = int(reportsCount)
+		infrastructures[i].ReportsCount = int(reportsCount)
 	}
 
 	return &repo.GetAllInfrastructuresResp{
