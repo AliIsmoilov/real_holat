@@ -71,6 +71,20 @@ func (h *handlerV1) UpdateInfrastructure(ctx *gin.Context) {
 		infrastructure.ContractorName = req.ContractorName
 	}
 
+	if len(req.CheckItems) > 0 {
+		checkItems := make([]*repo.InfrastructureCheckItem, 0, len(req.CheckItems))
+		for _, item := range req.CheckItems {
+			checkItems = append(checkItems, &repo.InfrastructureCheckItem{
+				Id:               uuid.New(),
+				InfrastructureId: infrastructure.Id,
+				Category:         item.Category,
+				Question:         item.Question,
+				IsActive:         item.IsActive,
+			})
+		}
+		infrastructure.CheckItems = checkItems
+	}
+
 	data, err := h.service.Infrastructure().Update(ctx.Request.Context(), infrastructure)
 	if err != nil {
 		libs.HandleInternalServerError(ctx.Writer, err)

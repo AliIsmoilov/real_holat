@@ -65,15 +65,16 @@ type InfrastructureCreateReq struct {
 }
 
 type InfrastructureUpdateReq struct {
-	TypeId         uuid.UUID `json:"type_id"`
-	Name           string    `json:"name"`
-	Description    string    `json:"description"`
-	Address        string    `json:"address"`
-	Latitude       float64   `json:"latitude"`
-	Longitude      float64   `json:"longitude"`
-	Status         string    `json:"status"`
-	OverallRating  int       `json:"overall_rating"`
-	ContractorName string    `json:"contractor_name"`
+	TypeId         uuid.UUID                           `json:"type_id"`
+	Name           string                              `json:"name"`
+	Description    string                              `json:"description"`
+	Address        string                              `json:"address"`
+	Latitude       float64                             `json:"latitude"`
+	Longitude      float64                             `json:"longitude"`
+	Status         string                              `json:"status"`
+	OverallRating  int                                 `json:"overall_rating"`
+	ContractorName string                              `json:"contractor_name"`
+	CheckItems     []*InfrastructureCheckItemCreateReq `json:"check_items"`
 }
 
 type InfrastructureResponse struct {
