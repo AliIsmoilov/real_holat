@@ -4,7 +4,6 @@ import (
 	v1 "real-holat/api/v1"
 	"real-holat/config"
 	"real-holat/internal/service"
-	"real-holat/pkg/middleware"
 	"real-holat/storage"
 	"time"
 
@@ -42,8 +41,8 @@ func New(h *Handler) *gin.Engine {
 	apiV1 := api.Group("/v1")
 
 	apiV1.Use(
-		middleware.AuthMiddleware(),
-		middleware.CasbinMiddleware(h.Enf),
+	// middleware.AuthMiddleware(),
+	// middleware.CasbinMiddleware(h.Enf),
 	)
 
 	// infrastructure-types routes
